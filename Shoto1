@@ -1,0 +1,58 @@
+CREATE DATABASE SportsTraining;
+USE SportsTraining;
+
+-- Таблиця Тренери
+CREATE TABLE Тренери (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    ім_я VARCHAR(50) NOT NULL,
+    посада VARCHAR(50)
+);
+
+-- Таблиця Команди
+CREATE TABLE Команди (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    назва_команди VARCHAR(50) NOT NULL,
+    тренер_id INT,
+    FOREIGN KEY (тренер_id) REFERENCES Тренери(id)
+);
+
+-- Таблиця Гравці
+CREATE TABLE Гравці (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    ім_я VARCHAR(50) NOT NULL,
+    команда_id INT,
+    FOREIGN KEY (команда_id) REFERENCES Команди(id)
+);
+
+-- Таблиця Плани_тренувань
+CREATE TABLE Плани_тренувань (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    назва_плану VARCHAR(100) NOT NULL,
+    опис TEXT,
+    тренер_id INT,
+    команда_id INT,
+    гравець_id INT,
+    FOREIGN KEY (тренер_id) REFERENCES Тренери(id),
+    FOREIGN KEY (команда_id) REFERENCES Команди(id),
+    FOREIGN KEY (гравець_id) REFERENCES Гравці(id)
+);
+
+-- Таблиця Моніторинг
+CREATE TABLE Моніторинг (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    гравець_id INT,
+    план_id INT,
+    дата DATE,
+    прогрес DECIMAL(5,2),
+    FOREIGN KEY (гравець_id) REFERENCES Гравці(id),
+    FOREIGN KEY (план_id) REFERENCES Плани_тренувань(id)
+);
+
+-- Таблиця Корекції
+CREATE TABLE Корекції (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    план_id INT,
+    дата_корекції DATE,
+    опис_корекції TEXT,
+    FOREIGN KEY (план_id) REFERENCES Плани_тренувань(id)
+);
